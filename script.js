@@ -1,5 +1,6 @@
-//switch object
+//switch object & event listener
 const toggleSwitch = document.querySelector('input[type="checkbox"]');
+toggleSwitch.addEventListener('change', switchTheme);
 
 //html objects
 const nav = document.getElementById('nav');
@@ -9,18 +10,17 @@ const image2 = document.getElementById('image2');
 const image3 = document.getElementById('image3');
 const textBox = document.getElementById('text-box');
 
-//event listener
-toggleSwitch.addEventListener('change', switchTheme);
-
 //swich theme dynamically
 function switchTheme(event) {
     if(event.target.checked) { //switch to dark monde
         document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
         switchToDarkMode();
     } else {
         document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
         switchToLightMode();
-    }
+    } 
 }
 
 //dark mode styles
@@ -50,4 +50,14 @@ function updateImageMode(color) {
     image1.src = `img/undraw_designer_${color}.svg`;
     image2.src = `img/undraw_location_${color}.svg`;
     image3.src = `img/undraw_controlpanel_${color}.svg`;
+}
+
+//on load check local storage for theme
+const currentTheme = localStorage.getItem('theme');
+if(currentTheme) {
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    if(currentTheme === 'dark') {
+        toggleSwitch.checked = true;  
+        switchToDarkMode();      
+    }
 }
